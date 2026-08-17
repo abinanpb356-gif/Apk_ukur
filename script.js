@@ -1,158 +1,245 @@
-// Tab Navigation
-document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const tabName = this.getAttribute('data-tab');
-        showTab(tabName);
-    });
+let model="";
+
+
+function pilihModel(x){
+
+model=x;
+
+let area=document.getElementById("inputArea");
+
+let judul=document.getElementById("judul");
+
+
+judul.innerHTML="Input "+x;
+
+
+if(x=="panjang"){
+
+area.innerHTML=`
+<input id="p" placeholder="Panjang meter">
+<input id="l" placeholder="Lebar meter">
+`;
+
+}
+
+
+if(x=="persegi"){
+
+area.innerHTML=`
+<input id="s" placeholder="Sisi meter">
+`;
+
+}
+
+
+
+if(x=="segitiga"){
+
+area.innerHTML=`
+<input id="a" placeholder="Alas meter">
+<input id="t" placeholder="Tinggi meter">
+`;
+
+}
+
+
+
+if(x=="trapesium"){
+
+area.innerHTML=`
+<input id="a" placeholder="Sisi atas">
+<input id="b" placeholder="Sisi bawah">
+<input id="t" placeholder="Tinggi">
+`;
+
+}
+
+
+
+if(x=="lingkaran"){
+
+area.innerHTML=`
+<input id="r" placeholder="Jari-jari meter">
+`;
+
+}
+
+
+
+if(x=="custom"){
+
+area.innerHTML=`
+
+<p>
+Masukkan titik batas tanah
+</p>
+
+<textarea id="titik"
+placeholder="
+contoh:
+0,0
+10,0
+12,5
+5,10
+">
+</textarea>
+
+`;
+
+}
+
+}
+
+
+
+
+function hitung(){
+
+let luas=0;
+
+
+if(model=="panjang"){
+
+luas=
+Number(p.value)*
+Number(l.value);
+
+}
+
+
+if(model=="persegi"){
+
+luas=
+Number(s.value)*
+Number(s.value);
+
+}
+
+
+if(model=="segitiga"){
+
+luas=
+0.5*
+Number(a.value)*
+Number(t.value);
+
+}
+
+
+if(model=="trapesium"){
+
+luas=
+((Number(a.value)+Number(b.value))/2)
+*
+Number(t.value);
+
+}
+
+
+if(model=="lingkaran"){
+
+luas=
+Math.PI*
+Number(r.value)*
+Number(r.value);
+
+}
+
+
+
+if(model=="custom"){
+
+let data=
+titik.value.trim()
+.split("\n")
+.map(x=>x.split(",").map(Number));
+
+
+luas=polygon(data);
+
+gambarPolygon(data);
+
+}
+
+
+
+document.getElementById("hasil").innerHTML=
+
+`
+<h2>
+Luas :
+${luas.toFixed(2)} m²
+</h2>
+
+<p>
+=
+${(luas/10000).toFixed(4)}
+Hektar
+</p>
+`;
+
+}
+
+
+
+function polygon(points){
+
+let area=0;
+
+
+for(let i=0;i<points.length;i++){
+
+let j=(i+1)%points.length;
+
+
+area +=
+points[i][0]*points[j][1]
+-
+points[j][0]*points[i][1];
+
+}
+
+
+return Math.abs(area/2);
+
+}
+
+
+
+
+
+function gambarPolygon(points){
+
+let c=
+document.getElementById("gambar");
+
+let ctx=
+c.getContext("2d");
+
+
+ctx.clearRect(0,0,400,300);
+
+
+ctx.beginPath();
+
+
+points.forEach((p,i)=>{
+
+let x=p[0]*20+50;
+let y=p[1]*20+50;
+
+
+if(i==0)
+ctx.moveTo(x,y);
+else
+ctx.lineTo(x,y);
+
+
 });
 
-function showTab(tabName) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-    });
 
-    // Remove active class from all buttons
-    document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.remove('active');
-    });
+ctx.closePath();
+ctx.stroke();
 
-    // Show selected tab
-    document.getElementById(tabName).classList.add('active');
 
-    // Add active class to clicked button
-    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-}
-
-// Validation function
-function validateInput(value, errorId, inputId) {
-    const errorElement = document.getElementById(errorId);
-    const inputElement = document.getElementById(inputId);
-    
-    if (!errorElement || !inputElement) {
-        return false;
-    }
-    
-    if (value === '' || value === null) {
-        errorElement.textContent = '⚠️ Kolom ini harus diisi';
-        inputElement.classList.add('error');
-        return false;
-    } else if (parseFloat(value) <= 0) {
-        errorElement.textContent = '⚠️ Nilai harus lebih dari 0';
-        inputElement.classList.add('error');
-        return false;
-    } else if (isNaN(parseFloat(value))) {
-        errorElement.textContent = '⚠️ Hanya angka yang diperbolehkan';
-        inputElement.classList.add('error');
-        return false;
-    } else {
-        errorElement.textContent = '';
-        inputElement.classList.remove('error');
-        return true;
-    }
-}
-
-// Clear error message when user types
-document.addEventListener('input', function(e) {
-    if (e.target.type === 'number') {
-        if (e.target.value !== '' && parseFloat(e.target.value) > 0) {
-            // Clear all error messages for this field
-            const parentForm = e.target.closest('form');
-            if (parentForm) {
-                const errorMessages = parentForm.querySelectorAll('.error-message');
-                errorMessages.forEach(elem => {
-                    elem.textContent = '';
-                });
-            }
-            e.target.classList.remove('error');
-        }
-    }
-});
-
-// PERSEGI PANJANG
-function hitungPersegiPanjang(event) {
-    event.preventDefault();
-
-    const panjang = document.getElementById('panjang').value;
-    const lebar = document.getElementById('lebar').value;
-
-    // Validasi input
-    const validPanjang = validateInput(panjang, 'error-panjang', 'panjang');
-    const validLebar = validateInput(lebar, 'error-lebar', 'lebar');
-
-    if (!validPanjang || !validLebar) {
-        document.getElementById('hasilPersegiPanjang').style.display = 'none';
-        return;
-    }
-
-    // Hitung luas
-    const panjangNum = parseFloat(panjang);
-    const lebarNum = parseFloat(lebar);
-    const luas = panjangNum * lebarNum;
-
-    // Tampilkan hasil
-    document.getElementById('nilaiPersegiPanjang').textContent = luas.toFixed(2);
-    document.getElementById('detailPanjang').textContent = panjangNum.toFixed(2);
-    document.getElementById('detailLebar').textContent = lebarNum.toFixed(2);
-    document.getElementById('hasilPersegiPanjang').style.display = 'block';
-}
-
-// SEGITIGA
-function hitungSegitiga(event) {
-    event.preventDefault();
-
-    const alas = document.getElementById('alasSegitiga').value;
-    const tinggi = document.getElementById('tinggiSegitiga').value;
-
-    // Validasi input
-    const validAlas = validateInput(alas, 'error-alas-segitiga', 'alasSegitiga');
-    const validTinggi = validateInput(tinggi, 'error-tinggi-segitiga', 'tinggiSegitiga');
-
-    if (!validAlas || !validTinggi) {
-        document.getElementById('hasilSegitiga').style.display = 'none';
-        return;
-    }
-
-    // Hitung luas
-    const alasNum = parseFloat(alas);
-    const tinggiNum = parseFloat(tinggi);
-    const luas = 0.5 * alasNum * tinggiNum;
-
-    // Tampilkan hasil
-    document.getElementById('nilaiSegitiga').textContent = luas.toFixed(2);
-    document.getElementById('detailAlasSegitiga').textContent = alasNum.toFixed(2);
-    document.getElementById('detailTinggiSegitiga').textContent = tinggiNum.toFixed(2);
-    document.getElementById('hasilSegitiga').style.display = 'block';
-}
-
-// TRAPESIUM
-function hitungTrapesium(event) {
-    event.preventDefault();
-
-    const sisi1 = document.getElementById('sisiSejajar1').value;
-    const sisi2 = document.getElementById('sisiSejajar2').value;
-    const tinggi = document.getElementById('tinggiTrapesium').value;
-
-    // Validasi input
-    const validSisi1 = validateInput(sisi1, 'error-sisi1', 'sisiSejajar1');
-    const validSisi2 = validateInput(sisi2, 'error-sisi2', 'sisiSejajar2');
-    const validTinggi = validateInput(tinggi, 'error-tinggi-trapesium', 'tinggiTrapesium');
-
-    if (!validSisi1 || !validSisi2 || !validTinggi) {
-        document.getElementById('hasilTrapesium').style.display = 'none';
-        return;
-    }
-
-    // Hitung luas
-    const sisi1Num = parseFloat(sisi1);
-    const sisi2Num = parseFloat(sisi2);
-    const tinggiNum = parseFloat(tinggi);
-    const luas = 0.5 * (sisi1Num + sisi2Num) * tinggiNum;
-
-    // Tampilkan hasil
-    document.getElementById('nilaiTrapesium').textContent = luas.toFixed(2);
-    document.getElementById('detailSisi1').textContent = sisi1Num.toFixed(2);
-    document.getElementById('detailSisi2').textContent = sisi2Num.toFixed(2);
-    document.getElementById('detailTinggiTrapesium').textContent = tinggiNum.toFixed(2);
-    document.getElementById('hasilTrapesium').style.display = 'block';
 }
