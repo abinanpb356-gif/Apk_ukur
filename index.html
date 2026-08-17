@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Ukur Manual Tanah</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 Aplikasi Ukur Manual Tanah</h1>
+            <p class="subtitle">Kalkulator Luas Tanah Profesional</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="persegi-panjang">Persegi Panjang</button>
+            <button class="tab-button" data-tab="segitiga">Segitiga</button>
+            <button class="tab-button" data-tab="trapesium">Trapesium</button>
+        </div>
+
+        <!-- Tab Persegi Panjang -->
+        <div id="persegi-panjang" class="tab-content active">
+            <div class="form-section">
+                <h2>Perhitungan Luas Persegi Panjang</h2>
+                <form id="formPersegiPanjang" onsubmit="hitungPersegiPanjang(event)">
+                    <div class="form-group">
+                        <label for="panjang">Panjang (meter):</label>
+                        <input 
+                            type="number" 
+                            id="panjang" 
+                            step="0.01" 
+                            placeholder="Masukkan panjang"
+                            required
+                        >
+                        <span class="error-message" id="error-panjang"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lebar">Lebar (meter):</label>
+                        <input 
+                            type="number" 
+                            id="lebar" 
+                            step="0.01" 
+                            placeholder="Masukkan lebar"
+                            required
+                        >
+                        <span class="error-message" id="error-lebar"></span>
+                    </div>
+
+                    <button type="submit" class="btn-hitung">Hitung Luas</button>
+                </form>
+
+                <div id="hasilPersegiPanjang" class="hasil-section" style="display: none;">
+                    <div class="hasil-box">
+                        <p class="hasil-label">Hasil Perhitungan:</p>
+                        <p class="hasil-value"><span id="nilaiPersegiPanjang">0</span> m²</p>
+                        <p class="hasil-detail">
+                            Panjang: <strong id="detailPanjang">0</strong> m × 
+                            Lebar: <strong id="detailLebar">0</strong> m
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Segitiga -->
+        <div id="segitiga" class="tab-content">
+            <div class="form-section">
+                <h2>Perhitungan Luas Segitiga</h2>
+                <p class="form-info">Rumus: Luas = 0,5 × alas × tinggi</p>
+                <form id="formSegitiga" onsubmit="hitungSegitiga(event)">
+                    <div class="form-group">
+                        <label for="alasSegitiga">Alas (meter):</label>
+                        <input 
+                            type="number" 
+                            id="alasSegitiga" 
+                            step="0.01" 
+                            placeholder="Masukkan alas"
+                            required
+                        >
+                        <span class="error-message" id="error-alas-segitiga"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tinggiSegitiga">Tinggi (meter):</label>
+                        <input 
+                            type="number" 
+                            id="tinggiSegitiga" 
+                            step="0.01" 
+                            placeholder="Masukkan tinggi"
+                            required
+                        >
+                        <span class="error-message" id="error-tinggi-segitiga"></span>
+                    </div>
+
+                    <button type="submit" class="btn-hitung">Hitung Luas</button>
+                </form>
+
+                <div id="hasilSegitiga" class="hasil-section" style="display: none;">
+                    <div class="hasil-box">
+                        <p class="hasil-label">Hasil Perhitungan:</p>
+                        <p class="hasil-value"><span id="nilaiSegitiga">0</span> m²</p>
+                        <p class="hasil-detail">
+                            Alas: <strong id="detailAlasSegitiga">0</strong> m × 
+                            Tinggi: <strong id="detailTinggiSegitiga">0</strong> m
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Trapesium -->
+        <div id="trapesium" class="tab-content">
+            <div class="form-section">
+                <h2>Perhitungan Luas Trapesium</h2>
+                <p class="form-info">Rumus: Luas = 0,5 × (sisi sejajar 1 + sisi sejajar 2) × tinggi</p>
+                <form id="formTrapesium" onsubmit="hitungTrapesium(event)">
+                    <div class="form-group">
+                        <label for="sisiSejajar1">Sisi Sejajar 1 (meter):</label>
+                        <input 
+                            type="number" 
+                            id="sisiSejajar1" 
+                            step="0.01" 
+                            placeholder="Masukkan sisi sejajar 1"
+                            required
+                        >
+                        <span class="error-message" id="error-sisi1"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sisiSejajar2">Sisi Sejajar 2 (meter):</label>
+                        <input 
+                            type="number" 
+                            id="sisiSejajar2" 
+                            step="0.01" 
+                            placeholder="Masukkan sisi sejajar 2"
+                            required
+                        >
+                        <span class="error-message" id="error-sisi2"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tinggiTrapesium">Tinggi (meter):</label>
+                        <input 
+                            type="number" 
+                            id="tinggiTrapesium" 
+                            step="0.01" 
+                            placeholder="Masukkan tinggi"
+                            required
+                        >
+                        <span class="error-message" id="error-tinggi-trapesium"></span>
+                    </div>
+
+                    <button type="submit" class="btn-hitung">Hitung Luas</button>
+                </form>
+
+                <div id="hasilTrapesium" class="hasil-section" style="display: none;">
+                    <div class="hasil-box">
+                        <p class="hasil-label">Hasil Perhitungan:</p>
+                        <p class="hasil-value"><span id="nilaiTrapesium">0</span> m²</p>
+                        <p class="hasil-detail">
+                            Sisi 1: <strong id="detailSisi1">0</strong> m, 
+                            Sisi 2: <strong id="detailSisi2">0</strong> m, 
+                            Tinggi: <strong id="detailTinggiTrapesium">0</strong> m
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 Aplikasi Ukur Manual Tanah | Versi 1.0</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
