@@ -32,7 +32,6 @@ area.innerHTML=`
 }
 
 
-
 if(x=="segitiga"){
 
 area.innerHTML=`
@@ -41,7 +40,6 @@ area.innerHTML=`
 `;
 
 }
-
 
 
 if(x=="trapesium"){
@@ -55,40 +53,10 @@ area.innerHTML=`
 }
 
 
-
 if(x=="lingkaran"){
 
 area.innerHTML=`
 <input id="r" placeholder="Jari-jari meter">
-`;
-
-}
-
-if(x=="jajar_genjang"){
-
-area.innerHTML=`
-<input id="alas" placeholder="Alas meter">
-<input id="tinggi" placeholder="Tinggi meter">
-`;
-
-}
-
-
-if(x=="layang_layang"){
-
-area.innerHTML=`
-<input id="d1" placeholder="Diagonal 1 meter">
-<input id="d2" placeholder="Diagonal 2 meter">
-`;
-
-}
-
-
-if(x=="belah_ketupat"){
-
-area.innerHTML=`
-<input id="d1" placeholder="Diagonal 1 meter">
-<input id="d2" placeholder="Diagonal 2 meter">
 `;
 
 }
@@ -102,6 +70,38 @@ area.innerHTML=`
 `;
 
 }
+
+
+if(x=="jajar"){
+
+area.innerHTML=`
+<input id="alas" placeholder="Alas meter">
+<input id="tinggi" placeholder="Tinggi meter">
+`;
+
+}
+
+
+if(x=="belah"){
+
+area.innerHTML=`
+<input id="d1" placeholder="Diagonal 1 meter">
+<input id="d2" placeholder="Diagonal 2 meter">
+`;
+
+}
+
+
+if(x=="layang"){
+
+area.innerHTML=`
+<input id="d1" placeholder="Diagonal 1 meter">
+<input id="d2" placeholder="Diagonal 2 meter">
+`;
+
+}
+
+
 if(x=="custom"){
 
 area.innerHTML=`
@@ -117,12 +117,12 @@ contoh:
 10,0
 12,5
 5,10
-">
-</textarea>
+"></textarea>
 
 `;
 
 }
+
 
 }
 
@@ -136,48 +136,63 @@ let luas=0;
 
 if(model=="panjang"){
 
-luas=
-Number(p.value)*
-Number(l.value);
+luas=p.value*l.value;
 
 }
 
 
 if(model=="persegi"){
 
-luas=
-Number(s.value)*
-Number(s.value);
+luas=s.value*s.value;
 
 }
 
 
 if(model=="segitiga"){
 
-luas=
-0.5*
-Number(a.value)*
-Number(t.value);
+luas=0.5*a.value*t.value;
 
 }
 
 
 if(model=="trapesium"){
 
-luas=
-((Number(a.value)+Number(b.value))/2)
-*
-Number(t.value);
+luas=((Number(a.value)+Number(b.value))/2)*Number(t.value);
 
 }
 
 
 if(model=="lingkaran"){
 
-luas=
-Math.PI*
-Number(r.value)*
-Number(r.value);
+luas=Math.PI*r.value*r.value;
+
+}
+
+
+if(model=="segi5"){
+
+luas=(5*Number(sisi.value)*Number(apotema.value))/2;
+
+}
+
+
+if(model=="jajar"){
+
+luas=Number(alas.value)*Number(tinggi.value);
+
+}
+
+
+if(model=="belah"){
+
+luas=(Number(d1.value)*Number(d2.value))/2;
+
+}
+
+
+if(model=="layang"){
+
+luas=(Number(d1.value)*Number(d2.value))/2;
 
 }
 
@@ -185,33 +200,32 @@ Number(r.value);
 
 if(model=="custom"){
 
-let data=
-titik.value.trim()
+
+let data=titik.value.trim()
 .split("\n")
 .map(x=>x.split(",").map(Number));
 
 
 luas=polygon(data);
 
+
 gambarPolygon(data);
 
+
 }
+
 
 
 
 document.getElementById("hasil").innerHTML=
 
 `
-<h2>
-Luas :
-${luas.toFixed(2)} m²
-</h2>
+<h2>Luas : ${Number(luas).toFixed(2)} m²</h2>
 
 <p>
-=
-${(luas/10000).toFixed(4)}
-Hektar
+${(luas/10000).toFixed(4)} Hektar
 </p>
+
 `;
 
 }
@@ -243,14 +257,12 @@ return Math.abs(area/2);
 
 
 
-
 function gambarPolygon(points){
 
-let c=
-document.getElementById("gambar");
 
-let ctx=
-c.getContext("2d");
+let c=document.getElementById("gambar");
+
+let ctx=c.getContext("2d");
 
 
 ctx.clearRect(0,0,400,300);
@@ -261,7 +273,9 @@ ctx.beginPath();
 
 points.forEach((p,i)=>{
 
+
 let x=p[0]*20+50;
+
 let y=p[1]*20+50;
 
 
@@ -275,6 +289,7 @@ ctx.lineTo(x,y);
 
 
 ctx.closePath();
+
 ctx.stroke();
 
 
