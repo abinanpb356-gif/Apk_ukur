@@ -64,8 +64,44 @@ area.innerHTML=`
 
 }
 
+if(x=="jajar_genjang"){
+
+area.innerHTML=`
+<input id="alas" placeholder="Alas meter">
+<input id="tinggi" placeholder="Tinggi meter">
+`;
+
+}
 
 
+if(x=="layang_layang"){
+
+area.innerHTML=`
+<input id="d1" placeholder="Diagonal 1 meter">
+<input id="d2" placeholder="Diagonal 2 meter">
+`;
+
+}
+
+
+if(x=="belah_ketupat"){
+
+area.innerHTML=`
+<input id="d1" placeholder="Diagonal 1 meter">
+<input id="d2" placeholder="Diagonal 2 meter">
+`;
+
+}
+
+
+if(x=="segi5"){
+
+area.innerHTML=`
+<input id="sisi" placeholder="Sisi meter">
+<input id="apotema" placeholder="Apotema meter">
+`;
+
+}
 if(x=="custom"){
 
 area.innerHTML=`
